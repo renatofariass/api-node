@@ -4,44 +4,44 @@ const clienteRoutes = express.Router();
 
 let Cliente = require('../model/Cliente');
 
-// api to add user
+// api to add cliente
 clienteRoutes.route('/add').post(function (req, res) {
     let cliente = new Cliente(req.body);
     cliente.save()
         .then(cliente => {
-            res.status(200).json({ 'status': 'success', 'mssg': 'user added successfully' });
+            res.status(200).json({ 'status': 'success', 'mssg': 'cliente added successfully' });
         })
         .catch(err => {
             res.status(409).send({ 'status': 'failure', 'mssg': 'unable to save to database' });
         });
 });
 
-// api to get users
+// api to get clientes
 clienteRoutes.route('/').get(function (req, res) {
-    Cliente.find(function (err, Cli) {
+    Cliente.find(function (err, clientes) {
         if (err) {
             res.status(400).send({ 'status': 'failure', 'mssg': 'Something went wrong' });
         }
         else {
-            res.status(200).json({ 'status': 'success', 'users': users });
+            res.status(200).json({ 'status': 'success', 'clientes': clientes });
         }
     });
 });
 
-// api to get user
-clienteRoutes.route('/user/:id').get(function (req, res) {
+// api to get cliente
+clienteRoutes.route('/pesquisar/:id').get(function (req, res) {
     let id = req.params.id;
     Cliente.findById(id, function (err, cliente) {
         if (err) {
             res.status(400).send({ 'status': 'failure', 'mssg': 'Something went wrong' });
         }
         else {
-            res.status(200).json({ 'status': 'success', 'user': cliente });
+            res.status(200).json({ 'status': 'success', 'cliente': cliente });
         }
     });
 });
 
-// api to update route
+// api to update cliente
 clienteRoutes.route('/update/:id').put(function (req, res) {
     Cliente.findById(req.params.id, function (err, cliente) {
         if (!cliente) {

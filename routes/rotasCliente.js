@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
-const clienteRoutes = express.Router();
+const rotasCliente = express.Router();
 
 let Cliente = require('../model/Cliente');
 
-// api to add cliente
-clienteRoutes.route('/add').post(function (req, res) {
+// api para adicionar um cliente
+rotasCliente.route('/add').post(function (req, res) {
     let cliente = new Cliente(req.body);
     cliente.save()
         .then(cliente => {
@@ -16,8 +16,8 @@ clienteRoutes.route('/add').post(function (req, res) {
         });
 });
 
-// api to get clientes
-clienteRoutes.route('/').get(function (req, res) {
+// api para receber clientes
+rotasCliente.route('/').get(function (req, res) {
     Cliente.find(function (err, clientes) {
         if (err) {
             res.status(400).send({ 'status': 'failure', 'mssg': 'Something went wrong' });
@@ -28,8 +28,8 @@ clienteRoutes.route('/').get(function (req, res) {
     });
 });
 
-// api to get cliente
-clienteRoutes.route('/pesquisar/:id').get(function (req, res) {
+// api para receber cliente
+rotasCliente.route('/pesquisar/:id').get(function (req, res) {
     let id = req.params.id;
     Cliente.findById(id, function (err, cliente) {
         if (err) {
@@ -41,8 +41,8 @@ clienteRoutes.route('/pesquisar/:id').get(function (req, res) {
     });
 });
 
-// api to update cliente
-clienteRoutes.route('/update/:id').put(function (req, res) {
+// api para atualizar cliente
+rotasCliente.route('/atualizar/:id').put(function (req, res) {
     Cliente.findById(req.params.id, function (err, cliente) {
         if (!cliente) {
             res.status(400).send({ 'status': 'failure', 'mssg': 'Unable to find data' });
@@ -59,8 +59,8 @@ clienteRoutes.route('/update/:id').put(function (req, res) {
     });
 });
 
-// api for delete
-clienteRoutes.route('/delete/:id').delete(function (req, res) {
+// api para deletar cliente 
+rotasCliente.route('/delete/:id').delete(function (req, res) {
     Cliente.findByIdAndRemove({ _id: req.params.id }, function (err) {
         if (err) {
             res.status(400).send({ 'status': 'failure', 'mssg': 'Something went wrong' });
@@ -71,4 +71,4 @@ clienteRoutes.route('/delete/:id').delete(function (req, res) {
     });
 });
 
-module.exports = clienteRoutes;
+module.exports = rotasCliente;
